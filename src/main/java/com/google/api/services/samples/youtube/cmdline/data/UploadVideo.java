@@ -67,6 +67,11 @@ public class UploadVideo {
         // to the authenticated user's YouTube channel, but doesn't allow
         // other types of access.
         List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube.upload");
+        int i = 1000;
+        while (i > 0) {
+            i--;
+        }
+        Byte b = (byte) i;
 
         try {
             // Authorize the request.

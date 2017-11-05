@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 
 repositories {
     mavenCentral()
@@ -11,4 +11,11 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'com.google.apis', name: 'google-api-services-youtube', version: 'v3-rev182-1.22.0'
+    compile group: 'com.google.apis', name: 'google-api-services-youtubeAnalytics', version: 'v1-rev63-1.22.0'
+    compile group: 'com.google.apis', name: 'google-api-services-youtubereporting', version: 'v1-rev10-1.22.0'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.4'
+    compile group: 'com.google.http-client', name: 'google-http-client-jackson2', version: '1.20.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.20.0'
+    compile group: 'com.google.collections', name: 'google-collections', version: '1.0'
 }

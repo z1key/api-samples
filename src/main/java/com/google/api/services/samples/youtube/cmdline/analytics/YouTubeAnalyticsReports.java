@@ -128,7 +128,7 @@ public class YouTubeAnalyticsReports {
                 .query("channel==" + id,     // channel id
                         "2012-01-01",         // Start date.
                         "2012-01-14",         // End date.
-                        "views,uniques")      // Metrics.
+                        "views")      // Metrics.
                 .setDimensions("day")
                 .setSort("day")
                 .execute();

@@ -12,13 +12,14 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 
+import com.google.api.services.samples.youtube.cmdline.Auth;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.api.services.youtube.model.*;
 import com.google.api.services.youtube.YouTube;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,10 +68,9 @@ public class Quickstart {
      */
     public static Credential authorize() throws IOException {
         // Load client secrets.
-        InputStream in =
-            Quickstart.class.getResourceAsStream("/client_secret.json");
+        Reader clientSecretReader = new InputStreamReader(Auth.class.getResourceAsStream("/client_secrets.json"));
         GoogleClientSecrets clientSecrets =
-            GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+            GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =

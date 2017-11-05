@@ -64,7 +64,7 @@ public class ChannelBulletin {
 
             // This object is used to make YouTube Data API requests.
             youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential).setApplicationName(
-                    "youtube-cmdline-channelbulletin-sample").build();
+                    "youtube-api-test").build();
 
             // Construct a request to retrieve the current user's channel ID.
             // See https://developers.google.com/youtube/v3/docs/channels/list
