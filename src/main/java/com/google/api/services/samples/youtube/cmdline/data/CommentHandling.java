@@ -32,7 +32,7 @@ import com.google.common.collect.Lists;
 
 /**
  * This sample creates and manages comments by:
- *
+ * <p>
  * 1. Retrieving the top-level comments for a video via "commentThreads.list" method.
  * 2. Replying to a comment thread via "comments.insert" method.
  * 3. Retrieving comment replies via "comments.list" method.

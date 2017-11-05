@@ -101,6 +101,7 @@ public class Search {
 
             // Restrict the search results to only include videos. See:
             // https://developers.google.com/youtube/v3/docs/search/list#type
+            search.setForMine(true);
             search.setType("video");
 
             // To increase efficiency, only retrieve the fields that the

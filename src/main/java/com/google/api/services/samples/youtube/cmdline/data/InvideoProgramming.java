@@ -42,7 +42,7 @@ public class InvideoProgramming {
     /**
      * This sample video introduces WebM on YouTube Developers Live.
      */
-    private static final String FEATURED_VIDEO_ID = "w4eiUiauo2w";
+    private static final String FEATURED_VIDEO_ID = "8Yf2Xj2Q8fo";
 
     /**
      * This code sample demonstrates different ways that the API can be used to

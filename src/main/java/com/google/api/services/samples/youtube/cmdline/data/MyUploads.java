@@ -18,10 +18,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.samples.youtube.cmdline.Auth;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.Channel;
-import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.PlaylistItem;
-import com.google.api.services.youtube.model.PlaylistItemListResponse;
+import com.google.api.services.youtube.model.*;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -88,31 +85,40 @@ public class MyUploads {
 
                 // Retrieve the playlist of the channel's uploaded videos.
                 YouTube.PlaylistItems.List playlistItemRequest =
-                        youtube.playlistItems().list("id,contentDetails,snippet");
+                        youtube.playlistItems().list("id,contentDetails");
                 playlistItemRequest.setPlaylistId(uploadPlaylistId);
 
                 // Only retrieve data used in this application, thereby making
                 // the application more efficient. See:
                 // https://developers.google.com/youtube/v3/getting-started#partial
                 playlistItemRequest.setFields(
-                        "items(contentDetails/videoId,snippet/title,snippet/publishedAt),nextPageToken,pageInfo");
+                        "items(contentDetails/videoId),nextPageToken,pageInfo");
 
                 String nextToken = "";
 
                 // Call the API one or more times to retrieve all items in the
                 // list. As long as the API response returns a nextPageToken,
                 // there are still more items to retrieve.
+                StringBuilder videoIds = new StringBuilder();
                 do {
                     playlistItemRequest.setPageToken(nextToken);
                     PlaylistItemListResponse playlistItemResult = playlistItemRequest.execute();
 
                     playlistItemList.addAll(playlistItemResult.getItems());
+                    for (PlaylistItem playlistItem : playlistItemResult.getItems()) {
+                        videoIds.append(playlistItem.getContentDetails().getVideoId());
+                        videoIds.append(",");
+                    }
 
                     nextToken = playlistItemResult.getNextPageToken();
                 } while (nextToken != null);
+                YouTube.Videos.List videoRequest = youtube.videos().list("contentDetails,snippet,statistics");
+                videoRequest.setId(videoIds.toString());
+
+                VideoListResponse videoListResponse = videoRequest.execute();
 
                 // Prints information about the results.
-                prettyPrint(playlistItemList.size(), playlistItemList.iterator());
+                prettyPrint(playlistItemList.size(), videoListResponse.getItems().iterator());
             }
 
         } catch (GoogleJsonResponseException e) {
@@ -132,16 +138,19 @@ public class MyUploads {
      *
      * @param iterator of Playlist Items from uploaded Playlist
      */
-    private static void prettyPrint(int size, Iterator<PlaylistItem> playlistEntries) {
+    private static void prettyPrint(int size, Iterator<Video> videoIterator) {
         System.out.println("=============================================================");
         System.out.println("\t\tTotal Videos Uploaded: " + size);
         System.out.println("=============================================================\n");
 
-        while (playlistEntries.hasNext()) {
-            PlaylistItem playlistItem = playlistEntries.next();
-            System.out.println(" video name  = " + playlistItem.getSnippet().getTitle());
-            System.out.println(" video id    = " + playlistItem.getContentDetails().getVideoId());
-            System.out.println(" upload date = " + playlistItem.getSnippet().getPublishedAt());
+        while (videoIterator.hasNext()) {
+            Video video = videoIterator.next();
+            System.out.println(" video name  = " + video.getSnippet().getTitle());
+            System.out.println(" duration    = " + video.getContentDetails().getDuration());
+            System.out.println(" views       = " + video.getStatistics().getViewCount());
+            System.out.println(" likes       = " + video.getStatistics().getLikeCount());
+            System.out.println(" dislikes    = " + video.getStatistics().getDislikeCount());
+            System.out.println(" upload date = " + video.getSnippet().getPublishedAt());
             System.out.println("\n-------------------------------------------------------------\n");
         }
     }
